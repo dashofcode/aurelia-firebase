@@ -1,24 +1,46 @@
-System.register(['bluebird', 'firebase', 'aurelia-dependency-injection', './configuration'], function (_export) {
-  'use strict';
+'use strict';
 
-  var Promise, Firebase, Container, Configuration, ReactiveCollection;
+System.register(['bluebird', 'firebase', 'aurelia-dependency-injection', './configuration'], function (_export, _context) {
+  "use strict";
 
-  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  var Promise, Firebase, Container, Configuration, _createClass, ReactiveCollection;
 
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
 
   return {
     setters: [function (_bluebird) {
-      Promise = _bluebird['default'];
+      Promise = _bluebird.default;
     }, function (_firebase) {
-      Firebase = _firebase['default'];
+      Firebase = _firebase.default;
     }, function (_aureliaDependencyInjection) {
       Container = _aureliaDependencyInjection.Container;
     }, function (_configuration) {
       Configuration = _configuration.Configuration;
     }],
     execute: function () {
-      ReactiveCollection = (function () {
+      _createClass = function () {
+        function defineProperties(target, props) {
+          for (var i = 0; i < props.length; i++) {
+            var descriptor = props[i];
+            descriptor.enumerable = descriptor.enumerable || false;
+            descriptor.configurable = true;
+            if ("value" in descriptor) descriptor.writable = true;
+            Object.defineProperty(target, descriptor.key, descriptor);
+          }
+        }
+
+        return function (Constructor, protoProps, staticProps) {
+          if (protoProps) defineProperties(Constructor.prototype, protoProps);
+          if (staticProps) defineProperties(Constructor, staticProps);
+          return Constructor;
+        };
+      }();
+
+      _export('ReactiveCollection', ReactiveCollection = function () {
         function ReactiveCollection(path) {
           _classCallCheck(this, ReactiveCollection);
 
@@ -136,7 +158,7 @@ System.register(['bluebird', 'firebase', 'aurelia-dependency-injection', './conf
             }
 
             var index = this.items.indexOf(value);
-            this._valueMap['delete'](key);
+            this._valueMap.delete(key);
             if (index !== -1) {
               this.items.splice(index, 1);
             }
@@ -151,7 +173,7 @@ System.register(['bluebird', 'firebase', 'aurelia-dependency-injection', './conf
               return;
             }
 
-            this._valueMap['delete'](oldValue.__firebaseKey__);
+            this._valueMap.delete(oldValue.__firebaseKey__);
             this._valueMap.set(value.__firebaseKey__, value);
             this.items.splice(this.items.indexOf(oldValue), 1, value);
           }
@@ -198,7 +220,7 @@ System.register(['bluebird', 'firebase', 'aurelia-dependency-injection', './conf
         }]);
 
         return ReactiveCollection;
-      })();
+      }());
 
       _export('ReactiveCollection', ReactiveCollection);
     }

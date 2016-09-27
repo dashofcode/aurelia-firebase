@@ -1,15 +1,39 @@
-System.register(['aurelia-dependency-injection', 'aurelia-event-aggregator'], function (_export) {
-  'use strict';
+'use strict';
 
-  var inject, EventAggregator, FirebaseEvent, UserEvent, UserCreatedEvent, UserSignedInEvent, UserSignedOutEvent, UserEmailChangedEvent, UserPasswordChangedEvent, UserDeletedEvent, UserAuthStateChangedEvent, Publisher;
+System.register(['aurelia-dependency-injection', 'aurelia-event-aggregator'], function (_export, _context) {
+  "use strict";
 
-  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  var inject, EventAggregator, _createClass, _dec, _class10, FirebaseEvent, UserEvent, UserCreatedEvent, UserSignedInEvent, UserSignedOutEvent, UserEmailChangedEvent, UserPasswordChangedEvent, UserDeletedEvent, UserAuthStateChangedEvent, Publisher;
 
-  var _get = function get(_x2, _x3, _x4) { var _again = true; _function: while (_again) { var object = _x2, property = _x3, receiver = _x4; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x2 = parent; _x3 = property; _x4 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
 
-  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
 
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+
+    subClass.prototype = Object.create(superClass && superClass.prototype, {
+      constructor: {
+        value: subClass,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
 
   return {
     setters: [function (_aureliaDependencyInjection) {
@@ -18,13 +42,31 @@ System.register(['aurelia-dependency-injection', 'aurelia-event-aggregator'], fu
       EventAggregator = _aureliaEventAggregator.EventAggregator;
     }],
     execute: function () {
+      _createClass = function () {
+        function defineProperties(target, props) {
+          for (var i = 0; i < props.length; i++) {
+            var descriptor = props[i];
+            descriptor.enumerable = descriptor.enumerable || false;
+            descriptor.configurable = true;
+            if ("value" in descriptor) descriptor.writable = true;
+            Object.defineProperty(target, descriptor.key, descriptor);
+          }
+        }
+
+        return function (Constructor, protoProps, staticProps) {
+          if (protoProps) defineProperties(Constructor.prototype, protoProps);
+          if (staticProps) defineProperties(Constructor, staticProps);
+          return Constructor;
+        };
+      }();
+
       FirebaseEvent = function FirebaseEvent() {
         _classCallCheck(this, FirebaseEvent);
 
         this.handled = false;
       };
 
-      UserEvent = (function (_FirebaseEvent) {
+      UserEvent = function (_FirebaseEvent) {
         _inherits(UserEvent, _FirebaseEvent);
 
         function UserEvent() {
@@ -32,126 +74,143 @@ System.register(['aurelia-dependency-injection', 'aurelia-event-aggregator'], fu
 
           _classCallCheck(this, UserEvent);
 
-          _get(Object.getPrototypeOf(UserEvent.prototype), 'constructor', this).call(this);
-          this.uid = uid;
+          var _this = _possibleConstructorReturn(this, (UserEvent.__proto__ || Object.getPrototypeOf(UserEvent)).call(this));
+
+          _this.uid = uid;
+          return _this;
         }
 
         return UserEvent;
-      })(FirebaseEvent);
+      }(FirebaseEvent);
 
-      UserCreatedEvent = (function (_UserEvent) {
+      _export('UserCreatedEvent', UserCreatedEvent = function (_UserEvent) {
         _inherits(UserCreatedEvent, _UserEvent);
 
         function UserCreatedEvent(data) {
           _classCallCheck(this, UserCreatedEvent);
 
-          _get(Object.getPrototypeOf(UserCreatedEvent.prototype), 'constructor', this).call(this, data.uid);
-          this.email = data.email;
+          var _this2 = _possibleConstructorReturn(this, (UserCreatedEvent.__proto__ || Object.getPrototypeOf(UserCreatedEvent)).call(this, data.uid));
+
+          _this2.email = data.email;
+          return _this2;
         }
 
         return UserCreatedEvent;
-      })(UserEvent);
+      }(UserEvent));
 
       _export('UserCreatedEvent', UserCreatedEvent);
 
-      UserSignedInEvent = (function (_UserEvent2) {
+      _export('UserSignedInEvent', UserSignedInEvent = function (_UserEvent2) {
         _inherits(UserSignedInEvent, _UserEvent2);
 
         function UserSignedInEvent(data) {
           _classCallCheck(this, UserSignedInEvent);
 
-          _get(Object.getPrototypeOf(UserSignedInEvent.prototype), 'constructor', this).call(this, data.uid);
-          this.provider = data.provider;
-          this.email = data.email;
+          var _this3 = _possibleConstructorReturn(this, (UserSignedInEvent.__proto__ || Object.getPrototypeOf(UserSignedInEvent)).call(this, data.uid));
+
+          _this3.provider = data.provider;
+          _this3.email = data.email;
+          return _this3;
         }
 
         return UserSignedInEvent;
-      })(UserEvent);
+      }(UserEvent));
 
       _export('UserSignedInEvent', UserSignedInEvent);
 
-      UserSignedOutEvent = (function (_UserEvent3) {
+      _export('UserSignedOutEvent', UserSignedOutEvent = function (_UserEvent3) {
         _inherits(UserSignedOutEvent, _UserEvent3);
 
         function UserSignedOutEvent(data) {
           _classCallCheck(this, UserSignedOutEvent);
 
-          _get(Object.getPrototypeOf(UserSignedOutEvent.prototype), 'constructor', this).call(this);
-          this.email = data.email;
+          var _this4 = _possibleConstructorReturn(this, (UserSignedOutEvent.__proto__ || Object.getPrototypeOf(UserSignedOutEvent)).call(this));
+
+          _this4.email = data.email;
+          return _this4;
         }
 
         return UserSignedOutEvent;
-      })(UserEvent);
+      }(UserEvent));
 
       _export('UserSignedOutEvent', UserSignedOutEvent);
 
-      UserEmailChangedEvent = (function (_UserEvent4) {
+      _export('UserEmailChangedEvent', UserEmailChangedEvent = function (_UserEvent4) {
         _inherits(UserEmailChangedEvent, _UserEvent4);
 
         function UserEmailChangedEvent(data) {
           _classCallCheck(this, UserEmailChangedEvent);
 
-          _get(Object.getPrototypeOf(UserEmailChangedEvent.prototype), 'constructor', this).call(this);
-          this.oldEmail = data.oldEmail;
-          this.newEmail = data.newEmail;
+          var _this5 = _possibleConstructorReturn(this, (UserEmailChangedEvent.__proto__ || Object.getPrototypeOf(UserEmailChangedEvent)).call(this));
+
+          _this5.oldEmail = data.oldEmail;
+          _this5.newEmail = data.newEmail;
+          return _this5;
         }
 
         return UserEmailChangedEvent;
-      })(UserEvent);
+      }(UserEvent));
 
       _export('UserEmailChangedEvent', UserEmailChangedEvent);
 
-      UserPasswordChangedEvent = (function (_UserEvent5) {
+      _export('UserPasswordChangedEvent', UserPasswordChangedEvent = function (_UserEvent5) {
         _inherits(UserPasswordChangedEvent, _UserEvent5);
 
         function UserPasswordChangedEvent(data) {
           _classCallCheck(this, UserPasswordChangedEvent);
 
-          _get(Object.getPrototypeOf(UserPasswordChangedEvent.prototype), 'constructor', this).call(this);
-          this.email = data.email;
+          var _this6 = _possibleConstructorReturn(this, (UserPasswordChangedEvent.__proto__ || Object.getPrototypeOf(UserPasswordChangedEvent)).call(this));
+
+          _this6.email = data.email;
+          return _this6;
         }
 
         return UserPasswordChangedEvent;
-      })(UserEvent);
+      }(UserEvent));
 
       _export('UserPasswordChangedEvent', UserPasswordChangedEvent);
 
-      UserDeletedEvent = (function (_UserEvent6) {
+      _export('UserDeletedEvent', UserDeletedEvent = function (_UserEvent6) {
         _inherits(UserDeletedEvent, _UserEvent6);
 
         function UserDeletedEvent(data) {
           _classCallCheck(this, UserDeletedEvent);
 
-          _get(Object.getPrototypeOf(UserDeletedEvent.prototype), 'constructor', this).call(this);
-          this.email = data.email;
+          var _this7 = _possibleConstructorReturn(this, (UserDeletedEvent.__proto__ || Object.getPrototypeOf(UserDeletedEvent)).call(this));
+
+          _this7.email = data.email;
+          return _this7;
         }
 
         return UserDeletedEvent;
-      })(UserEvent);
+      }(UserEvent));
 
       _export('UserDeletedEvent', UserDeletedEvent);
 
-      UserAuthStateChangedEvent = (function (_UserEvent7) {
+      _export('UserAuthStateChangedEvent', UserAuthStateChangedEvent = function (_UserEvent7) {
         _inherits(UserAuthStateChangedEvent, _UserEvent7);
 
         function UserAuthStateChangedEvent(data) {
           _classCallCheck(this, UserAuthStateChangedEvent);
 
           data = data || {};
-          _get(Object.getPrototypeOf(UserAuthStateChangedEvent.prototype), 'constructor', this).call(this, data.uid);
-          this.provider = data.provider || null;
-          this.auth = data.auth || null;
-          this.expires = data.expires || 0;
+
+          var _this8 = _possibleConstructorReturn(this, (UserAuthStateChangedEvent.__proto__ || Object.getPrototypeOf(UserAuthStateChangedEvent)).call(this, data.uid));
+
+          _this8.provider = data.provider || null;
+          _this8.auth = data.auth || null;
+          _this8.expires = data.expires || 0;
+          return _this8;
         }
 
         return UserAuthStateChangedEvent;
-      })(UserEvent);
+      }(UserEvent));
 
       _export('UserAuthStateChangedEvent', UserAuthStateChangedEvent);
 
-      Publisher = (function () {
+      _export('Publisher', Publisher = (_dec = inject(EventAggregator), _dec(_class10 = function () {
         function Publisher(eventAggregator) {
-          _classCallCheck(this, _Publisher);
+          _classCallCheck(this, Publisher);
 
           this._eventAggregator = eventAggregator;
         }
@@ -166,10 +225,8 @@ System.register(['aurelia-dependency-injection', 'aurelia-event-aggregator'], fu
           }
         }]);
 
-        var _Publisher = Publisher;
-        Publisher = inject(EventAggregator)(Publisher) || Publisher;
         return Publisher;
-      })();
+      }()) || _class10));
 
       _export('Publisher', Publisher);
     }

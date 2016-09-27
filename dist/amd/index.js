@@ -1,42 +1,44 @@
 define(['exports', './configuration', './user', './authentication', './collection', './events'], function (exports, _configuration, _user, _authentication, _collection, _events) {
   'use strict';
 
-  Object.defineProperty(exports, '__esModule', {
+  Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.configure = configure;
-
-  function _interopExportWildcard(obj, defaults) { var newObj = defaults({}, obj); delete newObj['default']; return newObj; }
-
-  function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
-
+  exports.ReactiveCollection = exports.AuthenticationManager = exports.User = exports.Configuration = undefined;
   Object.defineProperty(exports, 'Configuration', {
     enumerable: true,
-    get: function get() {
+    get: function () {
       return _configuration.Configuration;
     }
   });
   Object.defineProperty(exports, 'User', {
     enumerable: true,
-    get: function get() {
+    get: function () {
       return _user.User;
     }
   });
   Object.defineProperty(exports, 'AuthenticationManager', {
     enumerable: true,
-    get: function get() {
+    get: function () {
       return _authentication.AuthenticationManager;
     }
   });
   Object.defineProperty(exports, 'ReactiveCollection', {
     enumerable: true,
-    get: function get() {
+    get: function () {
       return _collection.ReactiveCollection;
     }
   });
-
-  _defaults(exports, _interopExportWildcard(_events, _defaults));
-
+  Object.keys(_events).forEach(function (key) {
+    if (key === "default" || key === "__esModule") return;
+    Object.defineProperty(exports, key, {
+      enumerable: true,
+      get: function () {
+        return _events[key];
+      }
+    });
+  });
+  exports.configure = configure;
   function configure(aurelia, configCallback) {
     var config = new _configuration.Configuration(_configuration.Configuration.defaults);
 

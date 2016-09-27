@@ -1,17 +1,21 @@
-System.register(['bluebird', 'firebase', 'aurelia-dependency-injection', './events', './user', './configuration'], function (_export) {
-  'use strict';
+'use strict';
 
-  var Promise, Firebase, inject, events, User, Configuration, AuthenticationManager;
+System.register(['bluebird', 'firebase', 'aurelia-dependency-injection', './events', './user', './configuration'], function (_export, _context) {
+  "use strict";
 
-  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  var Promise, Firebase, inject, events, User, Configuration, _createClass, _dec, _class, AuthenticationManager;
 
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
 
   return {
     setters: [function (_bluebird) {
-      Promise = _bluebird['default'];
+      Promise = _bluebird.default;
     }, function (_firebase) {
-      Firebase = _firebase['default'];
+      Firebase = _firebase.default;
     }, function (_aureliaDependencyInjection) {
       inject = _aureliaDependencyInjection.inject;
     }, function (_events) {
@@ -22,11 +26,29 @@ System.register(['bluebird', 'firebase', 'aurelia-dependency-injection', './even
       Configuration = _configuration.Configuration;
     }],
     execute: function () {
-      AuthenticationManager = (function () {
+      _createClass = function () {
+        function defineProperties(target, props) {
+          for (var i = 0; i < props.length; i++) {
+            var descriptor = props[i];
+            descriptor.enumerable = descriptor.enumerable || false;
+            descriptor.configurable = true;
+            if ("value" in descriptor) descriptor.writable = true;
+            Object.defineProperty(target, descriptor.key, descriptor);
+          }
+        }
+
+        return function (Constructor, protoProps, staticProps) {
+          if (protoProps) defineProperties(Constructor.prototype, protoProps);
+          if (staticProps) defineProperties(Constructor, staticProps);
+          return Constructor;
+        };
+      }();
+
+      _export('AuthenticationManager', AuthenticationManager = (_dec = inject(Configuration, events.Publisher), _dec(_class = function () {
         function AuthenticationManager(configuration, publisher) {
           var _this = this;
 
-          _classCallCheck(this, _AuthenticationManager);
+          _classCallCheck(this, AuthenticationManager);
 
           this._firebase = null;
           this._publisher = null;
@@ -164,10 +186,8 @@ System.register(['bluebird', 'firebase', 'aurelia-dependency-injection', './even
           }
         }]);
 
-        var _AuthenticationManager = AuthenticationManager;
-        AuthenticationManager = inject(Configuration, events.Publisher)(AuthenticationManager) || AuthenticationManager;
         return AuthenticationManager;
-      })();
+      }()) || _class));
 
       _export('AuthenticationManager', AuthenticationManager);
     }

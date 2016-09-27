@@ -1,19 +1,37 @@
 define(['exports'], function (exports) {
   'use strict';
 
-  Object.defineProperty(exports, '__esModule', {
+  Object.defineProperty(exports, "__esModule", {
     value: true
   });
 
-  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  var _createClass = function () {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
 
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+    return function (Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
+    };
+  }();
 
-  var ConfigurationDefaults = function ConfigurationDefaults() {
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  var ConfigurationDefaults = exports.ConfigurationDefaults = function ConfigurationDefaults() {
     _classCallCheck(this, ConfigurationDefaults);
   };
-
-  exports.ConfigurationDefaults = ConfigurationDefaults;
 
   ConfigurationDefaults._defaults = {
     firebaseUrl: null,
@@ -26,7 +44,7 @@ define(['exports'], function (exports) {
     return defaults;
   };
 
-  var Configuration = (function () {
+  var Configuration = exports.Configuration = function () {
     function Configuration(innerConfig) {
       _classCallCheck(this, Configuration);
 
@@ -76,7 +94,5 @@ define(['exports'], function (exports) {
     }]);
 
     return Configuration;
-  })();
-
-  exports.Configuration = Configuration;
+  }();
 });

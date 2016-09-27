@@ -1,0 +1,12 @@
+{
+    "plugins": [
+        "transform-decorators-legacy",
+        "transform-class-properties",
+        "transform-flow-strip-types",
+        "remove-comments"
+    ],
+    "presets": [
+        "es2015",
+        "stage-2"
+    ]
+}

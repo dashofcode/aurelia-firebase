@@ -1,18 +1,40 @@
-System.register([], function (_export) {
-  'use strict';
+'use strict';
 
-  var ConfigurationDefaults, Configuration;
+System.register([], function (_export, _context) {
+  "use strict";
 
-  var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+  var _createClass, ConfigurationDefaults, Configuration;
 
-  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
 
   return {
     setters: [],
     execute: function () {
-      ConfigurationDefaults = function ConfigurationDefaults() {
+      _createClass = function () {
+        function defineProperties(target, props) {
+          for (var i = 0; i < props.length; i++) {
+            var descriptor = props[i];
+            descriptor.enumerable = descriptor.enumerable || false;
+            descriptor.configurable = true;
+            if ("value" in descriptor) descriptor.writable = true;
+            Object.defineProperty(target, descriptor.key, descriptor);
+          }
+        }
+
+        return function (Constructor, protoProps, staticProps) {
+          if (protoProps) defineProperties(Constructor.prototype, protoProps);
+          if (staticProps) defineProperties(Constructor, staticProps);
+          return Constructor;
+        };
+      }();
+
+      _export('ConfigurationDefaults', ConfigurationDefaults = function ConfigurationDefaults() {
         _classCallCheck(this, ConfigurationDefaults);
-      };
+      });
 
       _export('ConfigurationDefaults', ConfigurationDefaults);
 
@@ -27,7 +49,7 @@ System.register([], function (_export) {
         return defaults;
       };
 
-      Configuration = (function () {
+      _export('Configuration', Configuration = function () {
         function Configuration(innerConfig) {
           _classCallCheck(this, Configuration);
 
@@ -77,7 +99,7 @@ System.register([], function (_export) {
         }]);
 
         return Configuration;
-      })();
+      }());
 
       _export('Configuration', Configuration);
     }
