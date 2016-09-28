@@ -45,6 +45,7 @@ System.register(['bluebird', 'firebase', 'aurelia-dependency-injection', './conf
           _classCallCheck(this, ReactiveCollection);
 
           this._query = null;
+          this._isBusy = true;
           this._valueMap = new Map();
           this.items = [];
 
@@ -128,7 +129,7 @@ System.register(['bluebird', 'firebase', 'aurelia-dependency-injection', './conf
               _this4._onItemRemoved(snapshot);
             });
             query.on('child_changed', function (snapshot, previousKey) {
-              _this4._onItemChanded(snapshot, previousKey);
+              _this4._onItemChanged(snapshot, previousKey);
             });
             query.on('child_moved', function (snapshot, previousKey) {
               _this4._onItemMoved(snapshot, previousKey);
@@ -203,6 +204,7 @@ System.register(['bluebird', 'firebase', 'aurelia-dependency-injection', './conf
               };
             }
             value.__firebaseKey__ = snapshot.key;
+            this._isBusy = false;
             return value;
           }
         }], [{

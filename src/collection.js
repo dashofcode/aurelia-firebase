@@ -6,6 +6,7 @@ import {Configuration} from './configuration';
 export class ReactiveCollection {
 
   _query = null;
+  _isBusy = true;
   _valueMap = new Map();
   items = [];
 
@@ -76,7 +77,7 @@ export class ReactiveCollection {
       this._onItemRemoved(snapshot);
     });
     query.on('child_changed', (snapshot, previousKey) => {
-      this._onItemChanded(snapshot, previousKey);
+      this._onItemChanged(snapshot, previousKey);
     });
     query.on('child_moved', (snapshot, previousKey) => {
       this._onItemMoved(snapshot, previousKey);
@@ -146,6 +147,7 @@ export class ReactiveCollection {
       };
     }
     value.__firebaseKey__ = snapshot.key;
+    this._isBusy = false;
     return value;
   }
 
