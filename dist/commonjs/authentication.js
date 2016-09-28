@@ -43,7 +43,7 @@ var AuthenticationManager = exports.AuthenticationManager = (_dec = (0, _aurelia
     this._publisher = null;
     this.currentUser = null;
 
-    this._firebase = new _firebase2.default(configuration.getFirebaseUrl());
+    this._firebase = new _firebase2.default(configuration.getAuthDomain());
     this._publisher = publisher;
     this.currentUser = new _user.User();
 

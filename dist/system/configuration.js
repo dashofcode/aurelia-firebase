@@ -43,7 +43,7 @@ System.register(['firebase'], function (_export, _context) {
       ConfigurationDefaults._defaults = {
         apiKey: null,
         authDomain: null,
-        databaseUrl: null,
+        databaseURL: null,
         monitorAuthChange: false
       };
 
@@ -99,14 +99,14 @@ System.register(['firebase'], function (_export, _context) {
             return this.setValue('authDomain', authDomain);
           }
         }, {
-          key: 'getDatabaseUrl',
-          value: function getDatabaseUrl() {
-            return this.getValue('databaseUrl');
+          key: 'getDatabaseURL',
+          value: function getDatabaseURL() {
+            return this.getValue('databaseURL');
           }
         }, {
-          key: 'setDatabaseUrl',
-          value: function setDatabaseUrl(databaseUrl) {
-            return this.setValue('databaseUrl', databaseUrl);
+          key: 'setDatabaseURL',
+          value: function setDatabaseURL(databaseURL) {
+            return this.setValue('databaseURL', databaseURL);
           }
         }, {
           key: 'getMonitorAuthChange',

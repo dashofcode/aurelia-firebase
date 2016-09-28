@@ -52,7 +52,7 @@ define(['exports', 'bluebird', 'firebase', 'aurelia-dependency-injection', './co
       var config = _aureliaDependencyInjection.Container.instance.get(_configuration.Configuration);
       if (!config) throw Error('Configuration has not been set');
 
-      this._query = new _firebase2.default(ReactiveCollection._getChildLocation(config.getFirebaseUrl(), path));
+      this._query = new _firebase2.default.database().ref(path);
       this._listenToQuery(this._query);
     }
 
@@ -150,7 +150,7 @@ define(['exports', 'bluebird', 'firebase', 'aurelia-dependency-injection', './co
     }, {
       key: '_onItemRemoved',
       value: function _onItemRemoved(oldSnapshot) {
-        var key = oldSnapshot.key();
+        var key = oldSnapshot.key;
         var value = this._valueMap.get(key);
 
         if (!value) {
@@ -180,7 +180,7 @@ define(['exports', 'bluebird', 'firebase', 'aurelia-dependency-injection', './co
     }, {
       key: '_onItemMoved',
       value: function _onItemMoved(snapshot, previousKey) {
-        var key = snapshot.key();
+        var key = snapshot.key;
         var value = this._valueMap.get(key);
 
         if (!value) {
@@ -202,7 +202,7 @@ define(['exports', 'bluebird', 'firebase', 'aurelia-dependency-injection', './co
             __firebasePrimitive__: true
           };
         }
-        value.__firebaseKey__ = snapshot.key();
+        value.__firebaseKey__ = snapshot.key;
         return value;
       }
     }], [{

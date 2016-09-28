@@ -71,7 +71,7 @@ define(['exports', 'bluebird', 'firebase', 'aurelia-dependency-injection', './ev
       this._publisher = null;
       this.currentUser = null;
 
-      this._firebase = new _firebase2.default(configuration.getFirebaseUrl());
+      this._firebase = new _firebase2.default(configuration.getAuthDomain());
       this._publisher = publisher;
       this.currentUser = new _user.User();
 

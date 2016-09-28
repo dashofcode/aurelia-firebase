@@ -24,7 +24,7 @@ export class AuthenticationManager {
   constructor(
     configuration: Configuration,
     publisher: Publisher) {
-    this._firebase = new Firebase(configuration.getFirebaseUrl());
+    this._firebase = new Firebase(configuration.getAuthDomain());
     this._publisher = publisher;
     this.currentUser = new User();
 

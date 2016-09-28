@@ -35,7 +35,7 @@ var ReactiveCollection = exports.ReactiveCollection = function () {
     var config = _aureliaDependencyInjection.Container.instance.get(_configuration.Configuration);
     if (!config) throw Error('Configuration has not been set');
 
-    this._query = new _firebase2.default(ReactiveCollection._getChildLocation(config.getFirebaseUrl(), path));
+    this._query = new _firebase2.default.database().ref(path);
     this._listenToQuery(this._query);
   }
 
@@ -133,7 +133,7 @@ var ReactiveCollection = exports.ReactiveCollection = function () {
   }, {
     key: '_onItemRemoved',
     value: function _onItemRemoved(oldSnapshot) {
-      var key = oldSnapshot.key();
+      var key = oldSnapshot.key;
       var value = this._valueMap.get(key);
 
       if (!value) {
@@ -163,7 +163,7 @@ var ReactiveCollection = exports.ReactiveCollection = function () {
   }, {
     key: '_onItemMoved',
     value: function _onItemMoved(snapshot, previousKey) {
-      var key = snapshot.key();
+      var key = snapshot.key;
       var value = this._valueMap.get(key);
 
       if (!value) {
@@ -185,7 +185,7 @@ var ReactiveCollection = exports.ReactiveCollection = function () {
           __firebasePrimitive__: true
         };
       }
-      value.__firebaseKey__ = snapshot.key();
+      value.__firebaseKey__ = snapshot.key;
       return value;
     }
   }], [{

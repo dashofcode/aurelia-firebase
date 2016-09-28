@@ -54,7 +54,7 @@ System.register(['bluebird', 'firebase', 'aurelia-dependency-injection', './even
           this._publisher = null;
           this.currentUser = null;
 
-          this._firebase = new Firebase(configuration.getFirebaseUrl());
+          this._firebase = new Firebase(configuration.getAuthDomain());
           this._publisher = publisher;
           this.currentUser = new User();
 

@@ -14,9 +14,7 @@ export class ReactiveCollection {
     let config = Container.instance.get(Configuration);
     if (!config) throw Error('Configuration has not been set');
 
-    this._query = new Firebase(ReactiveCollection._getChildLocation(
-      config.getFirebaseUrl(),
-      path));
+    this._query = new Firebase.database().ref(path);
     this._listenToQuery(this._query);
   }
 
@@ -98,7 +96,7 @@ export class ReactiveCollection {
   }
 
   _onItemRemoved(oldSnapshot) {
-    let key = oldSnapshot.key();
+    let key = oldSnapshot.key;
     let value = this._valueMap.get(key);
 
     if (!value) {
@@ -126,7 +124,7 @@ export class ReactiveCollection {
   }
 
   _onItemMoved(snapshot, previousKey) {
-    let key = snapshot.key();
+    let key = snapshot.key;
     let value = this._valueMap.get(key);
 
     if (!value) {
@@ -147,7 +145,7 @@ export class ReactiveCollection {
         __firebasePrimitive__: true
       };
     }
-    value.__firebaseKey__ = snapshot.key();
+    value.__firebaseKey__ = snapshot.key;
     return value;
   }
 

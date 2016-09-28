@@ -3,14 +3,14 @@ import {Configuration} from '../src/configuration';
 describe('Configuration', () => {
   it('should have default values', () => {
     let config = new Configuration();
-    expect(config.getFirebaseUrl()).toBeNull();
+    expect(config.getDatabaseURL()).toBeNull();
     expect(config.getMonitorAuthChange()).toBe(false);
   });
 
   it('should be configurable', () => {
     let config = new Configuration();
-    expect(config.setFirebaseUrl('https://google.com')).toBe(config); // fluent api check
-    expect(config.getFirebaseUrl()).toBe('https://google.com');
+    expect(config.setDatabaseURL('https://google.com')).toBe(config); // fluent api check
+    expect(config.getDatabaseURL()).toBe('https://google.com');
 
     config = new Configuration();
     expect(config.setMonitorAuthChange(true)).toBe(config); // fluent api check
@@ -21,9 +21,9 @@ describe('Configuration', () => {
     let config1 = new Configuration();
     let config2 = new Configuration();
 
-    expect(config2.getFirebaseUrl()).toBeNull();
-    config1.setFirebaseUrl('https://google.com');
-    expect(config2.getFirebaseUrl()).toBeNull();
+    expect(config2.getDatabaseURL()).toBeNull();
+    config1.setDatabaseURL('https://google.com');
+    expect(config2.getDatabaseURL()).toBeNull();
   });
 
   it('should get values on the parent when it does not have a value itself', () => {
