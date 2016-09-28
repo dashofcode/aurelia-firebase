@@ -1,3 +1,4 @@
+import * as firebase from 'firebase';
 /**
  * The default configuration
  */
@@ -6,7 +7,9 @@ export class ConfigurationDefaults {
 }
 
 ConfigurationDefaults._defaults = {
-  firebaseUrl: null,
+  apiKey: null,
+  authDomain: null,
+  databaseUrl: null,
   monitorAuthChange: false
 };
 
@@ -58,20 +61,54 @@ export class Configuration {
   }
 
   /**
-   * Gets the value of the firebaseUrl configuration option
-   * @returns {string} - The value of the firebaseUrl configuration option
+   * Gets the value of the Firebase API key configuration option
+   * @returns {string} - The value of the API key configuration option
    */
-  getFirebaseUrl() {
-    return this.getValue('firebaseUrl');
+  getApiKey() {
+    return this.getValue('apiKey');
   }
 
   /**
-   * Sets the value of the firebaseUrl configuration option
-   * @param {string} firebaseUrl - An URL to a valid Firebase location
+   * Sets the value of the Firebase API Key configuration option
+   * @param {string} databaseUrl - An key for a valid Firebase project
    * @returns {Configuration} - Returns the configuration instance (fluent API)
    */
-  setFirebaseUrl(firebaseUrl) {
-    return this.setValue('firebaseUrl', firebaseUrl);
+  setApiKey(apiKey) {
+    return this.setValue('apiKey', apiKey);
+  }
+
+  /**
+   * Gets the value of the Firebase Auth Domain configuration option
+   * @returns {string} - The value of the authDomain configuration option
+   */
+  getAuthDomain() {
+    return this.getValue('authDomain');
+  }
+
+  /**
+   * Sets the value of the Firebase Auth Domain configuration option
+   * @param {string} databaseUrl - A URL to a valid Firebase authDomain location
+   * @returns {Configuration} - Returns the configuration instance (fluent API)
+   */
+  setAuthDomain(authDomain) {
+    return this.setValue('authDomain', authDomain);
+  }
+
+  /**
+   * Gets the value of the Firebase database URL configuration option
+   * @returns {string} - The value of the databaseUrl configuration option
+   */
+  getDatabaseUrl() {
+    return this.getValue('databaseUrl');
+  }
+
+  /**
+   * Sets the value of the Firebase database URL configuration option
+   * @param {string} databaseUrl - A URL to a valid Firebase database location
+   * @returns {Configuration} - Returns the configuration instance (fluent API)
+   */
+  setDatabaseUrl(databaseUrl) {
+    return this.setValue('databaseUrl', databaseUrl);
   }
 
   /**
@@ -89,5 +126,13 @@ export class Configuration {
    */
   setMonitorAuthChange(monitorAuthChange: boolean = true) {
     return this.setValue('monitorAuthChange', monitorAuthChange === true);
+  }
+
+  initialize() {
+    if (!this.values.apiKey && (!this.values.authDomain || this.values.databaseURL)) {
+      throw Error('Configuration has not been set');
+    } else {
+      firebase.initializeApp(this.values)
+    }
   }
 }

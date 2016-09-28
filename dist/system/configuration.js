@@ -1,9 +1,9 @@
 'use strict';
 
-System.register([], function (_export, _context) {
+System.register(['firebase'], function (_export, _context) {
   "use strict";
 
-  var _createClass, ConfigurationDefaults, Configuration;
+  var firebase, _createClass, ConfigurationDefaults, Configuration;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -12,7 +12,9 @@ System.register([], function (_export, _context) {
   }
 
   return {
-    setters: [],
+    setters: [function (_firebase) {
+      firebase = _firebase;
+    }],
     execute: function () {
       _createClass = function () {
         function defineProperties(target, props) {
@@ -39,7 +41,9 @@ System.register([], function (_export, _context) {
       _export('ConfigurationDefaults', ConfigurationDefaults);
 
       ConfigurationDefaults._defaults = {
-        firebaseUrl: null,
+        apiKey: null,
+        authDomain: null,
+        databaseUrl: null,
         monitorAuthChange: false
       };
 
@@ -75,14 +79,34 @@ System.register([], function (_export, _context) {
             return this;
           }
         }, {
-          key: 'getFirebaseUrl',
-          value: function getFirebaseUrl() {
-            return this.getValue('firebaseUrl');
+          key: 'getApiKey',
+          value: function getApiKey() {
+            return this.getValue('apiKey');
           }
         }, {
-          key: 'setFirebaseUrl',
-          value: function setFirebaseUrl(firebaseUrl) {
-            return this.setValue('firebaseUrl', firebaseUrl);
+          key: 'setApiKey',
+          value: function setApiKey(apiKey) {
+            return this.setValue('apiKey', apiKey);
+          }
+        }, {
+          key: 'getAuthDomain',
+          value: function getAuthDomain() {
+            return this.getValue('authDomain');
+          }
+        }, {
+          key: 'setAuthDomain',
+          value: function setAuthDomain(authDomain) {
+            return this.setValue('authDomain', authDomain);
+          }
+        }, {
+          key: 'getDatabaseUrl',
+          value: function getDatabaseUrl() {
+            return this.getValue('databaseUrl');
+          }
+        }, {
+          key: 'setDatabaseUrl',
+          value: function setDatabaseUrl(databaseUrl) {
+            return this.setValue('databaseUrl', databaseUrl);
           }
         }, {
           key: 'getMonitorAuthChange',
@@ -95,6 +119,15 @@ System.register([], function (_export, _context) {
             var monitorAuthChange = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
 
             return this.setValue('monitorAuthChange', monitorAuthChange === true);
+          }
+        }, {
+          key: 'initialize',
+          value: function initialize() {
+            if (!this.values.apiKey && (!this.values.authDomain || this.values.databaseURL)) {
+              throw Error('Configuration has not been set');
+            } else {
+              firebase.initializeApp(this.values);
+            }
           }
         }]);
 

@@ -3,8 +3,15 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.Configuration = exports.ConfigurationDefaults = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _firebase = require('firebase');
+
+var firebase = _interopRequireWildcard(_firebase);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -13,7 +20,9 @@ var ConfigurationDefaults = exports.ConfigurationDefaults = function Configurati
 };
 
 ConfigurationDefaults._defaults = {
-  firebaseUrl: null,
+  apiKey: null,
+  authDomain: null,
+  databaseUrl: null,
   monitorAuthChange: false
 };
 
@@ -49,14 +58,34 @@ var Configuration = exports.Configuration = function () {
       return this;
     }
   }, {
-    key: 'getFirebaseUrl',
-    value: function getFirebaseUrl() {
-      return this.getValue('firebaseUrl');
+    key: 'getApiKey',
+    value: function getApiKey() {
+      return this.getValue('apiKey');
     }
   }, {
-    key: 'setFirebaseUrl',
-    value: function setFirebaseUrl(firebaseUrl) {
-      return this.setValue('firebaseUrl', firebaseUrl);
+    key: 'setApiKey',
+    value: function setApiKey(apiKey) {
+      return this.setValue('apiKey', apiKey);
+    }
+  }, {
+    key: 'getAuthDomain',
+    value: function getAuthDomain() {
+      return this.getValue('authDomain');
+    }
+  }, {
+    key: 'setAuthDomain',
+    value: function setAuthDomain(authDomain) {
+      return this.setValue('authDomain', authDomain);
+    }
+  }, {
+    key: 'getDatabaseUrl',
+    value: function getDatabaseUrl() {
+      return this.getValue('databaseUrl');
+    }
+  }, {
+    key: 'setDatabaseUrl',
+    value: function setDatabaseUrl(databaseUrl) {
+      return this.setValue('databaseUrl', databaseUrl);
     }
   }, {
     key: 'getMonitorAuthChange',
@@ -69,6 +98,15 @@ var Configuration = exports.Configuration = function () {
       var monitorAuthChange = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
 
       return this.setValue('monitorAuthChange', monitorAuthChange === true);
+    }
+  }, {
+    key: 'initialize',
+    value: function initialize() {
+      if (!this.values.apiKey && (!this.values.authDomain || this.values.databaseURL)) {
+        throw Error('Configuration has not been set');
+      } else {
+        firebase.initializeApp(this.values);
+      }
     }
   }]);
 
