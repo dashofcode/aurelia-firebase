@@ -41,7 +41,7 @@ define(['exports', 'bluebird', 'firebase', 'aurelia-dependency-injection', './co
   }();
 
   var RetrieveData = exports.RetrieveData = function () {
-    function RetrieveData(path, options) {
+    function RetrieveData(path, listener, options) {
       _classCallCheck(this, RetrieveData);
 
       this._query = null;
@@ -55,117 +55,46 @@ define(['exports', 'bluebird', 'firebase', 'aurelia-dependency-injection', './co
 
       this._query = new _firebase2.default.database().ref(RetrieveData._getChildLocation(path));
 
-      if (options) {
-        this._query = RetrieveData._setQueryOptions(this._query, options);
-        if (typeof options.listener === 'undefined' || options.listener === true) {
-          this._listenToQuery(this._query);
-        } else {
-          this._fetchQuery(this._query);
-        }
-      } else {
-        this._listenToQuery(this._query);
-      }
+      if (options) this._query = RetrieveData._setQueryOptions(this._query, options);
+
+      if (typeof listener === 'undefined' || listener === "on") this._listenToQuery(this._query);
+      if (listener === "off") this._stopListeningToQuery(query);
+      if (listener === "once") this._fetchQuery(this._query);
     }
 
     _createClass(RetrieveData, [{
-      key: 'add',
-      value: function add(item) {
-        var _this = this;
-
-        return new _bluebird2.default(function (resolve, reject) {
-          var query = _this._query.ref().push();
-          query.set(item, function (error) {
-            if (error) {
-              reject(error);
-              return;
-            }
-            resolve(item);
-          });
-        });
-      }
-    }, {
-      key: 'remove',
-      value: function remove(item) {
-        if (item === null || item.__firebaseKey__ === null) {
-          return _bluebird2.default.reject({ message: 'Unknown item' });
-        }
-        return this.removeByKey(item.__firebaseKey__);
-      }
-    }, {
-      key: 'getByKey',
-      value: function getByKey(key) {
-        return this._valueMap.get(key);
-      }
-    }, {
-      key: 'removeByKey',
-      value: function removeByKey(key) {
-        var _this2 = this;
-
-        return new _bluebird2.default(function (resolve, reject) {
-          _this2._query.ref().child(key).remove(function (error) {
-            if (error) {
-              reject(error);
-              return;
-            }
-            resolve(key);
-          });
-        });
-      }
-    }, {
-      key: 'clear',
-      value: function clear() {
-        var _this3 = this;
-
-        return new _bluebird2.default(function (resolve, reject) {
-          var query = _this3._query.ref();
-          query.remove(function (error) {
-            if (error) {
-              reject(error);
-              return;
-            }
-            resolve();
-          });
-        });
-      }
-    }, {
       key: '_fetchQuery',
       value: function _fetchQuery(query) {
-        var _this4 = this;
+        var _this = this;
 
-        query.on('value', function (snapshot) {
-          _this4._onValue(snapshot);
+        query.once('value', function (snapshot) {
+          snapshot.forEach(function (childSnapshot, previousKey) {
+            _this._onItemAdded(childSnapshot, previousKey);
+          });
         });
       }
     }, {
       key: '_listenToQuery',
       value: function _listenToQuery(query) {
-        var _this5 = this;
+        var _this2 = this;
 
         query.on('child_added', function (snapshot, previousKey) {
-          _this5._onItemAdded(snapshot, previousKey);
+          _this2._onItemAdded(snapshot, previousKey);
         });
         query.on('child_removed', function (snapshot) {
-          _this5._onItemRemoved(snapshot);
+          _this2._onItemRemoved(snapshot);
         });
         query.on('child_changed', function (snapshot, previousKey) {
-          _this5._onItemChanged(snapshot, previousKey);
+          _this2._onItemChanged(snapshot, previousKey);
         });
         query.on('child_moved', function (snapshot, previousKey) {
-          _this5._onItemMoved(snapshot, previousKey);
+          _this2._onItemMoved(snapshot, previousKey);
         });
       }
     }, {
       key: '_stopListeningToQuery',
       value: function _stopListeningToQuery(query) {
         query.off();
-      }
-    }, {
-      key: '_onValue',
-      value: function _onValue(snapshot) {
-        var value = this._valueFromSnapshot(snapshot);
-        var index = 0;
-        this._valueMap.set(value.__firebaseKey__, value);
-        this.items.splice(index, 0, value);
       }
     }, {
       key: '_onItemAdded',

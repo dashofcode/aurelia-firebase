@@ -10,78 +10,25 @@ export class RetrieveData {
   isLoading = true;
   items = [];
 
-  constructor(path: Array<string>, options: Object<any>) {
+  constructor(path: Array<string>, listener: string, options: Object<any>) {
     if (!Container || !Container.instance) throw Error('Container has not been made global');
     let config = Container.instance.get(Configuration);
     if (!config) throw Error('Configuration has not been set');
 
     this._query = new Firebase.database().ref(RetrieveData._getChildLocation(path));
     
-    if (options) {
-      this._query = RetrieveData._setQueryOptions(this._query, options);
-      if (typeof options.listener === 'undefined' || options.listener === true) {
-        this._listenToQuery(this._query);
-      } else {
-        this._fetchQuery(this._query);
-      }
-    } else {
-      this._listenToQuery(this._query);
-    }
-  }
+    if (options) this._query = RetrieveData._setQueryOptions(this._query, options);
 
-  add(item:any) : Promise {
-    return new Promise((resolve, reject) => {
-      let query = this._query.ref().push();
-      query.set(item, (error) => {
-        if (error) {
-          reject(error);
-          return;
-        }
-        resolve(item);
-      });
-    });
-  }
-
-  remove(item: any): Promise {
-    if (item === null || item.__firebaseKey__ === null) {
-      return Promise.reject({message: 'Unknown item'});
-    }
-    return this.removeByKey(item.__firebaseKey__);
-  }
-
-  getByKey(key): any {
-    return this._valueMap.get(key);
-  }
-
-  removeByKey(key) {
-    return new Promise((resolve, reject) => {
-      this._query.ref().child(key).remove((error) =>{
-        if (error) {
-          reject(error);
-          return;
-        }
-        resolve(key);
-      });
-    });
-  }
-
-  clear() {
-    //this._stopListeningToQuery(this._query);
-    return new Promise((resolve, reject) => {
-      let query = this._query.ref();
-      query.remove((error) => {
-        if (error) {
-          reject(error);
-          return;
-        }
-        resolve();
-      });
-    });
+    if (typeof listener === 'undefined' || listener === "on") this._listenToQuery(this._query);
+    if (listener === "off") this._stopListeningToQuery(query);
+    if (listener === "once") this._fetchQuery(this._query);
   }
 
   _fetchQuery(query) {
-    query.on('value', (snapshot) => {
-      this._onValue(snapshot);
+    query.once('value', (snapshot) => {
+      snapshot.forEach((childSnapshot, previousKey) => {
+        this._onItemAdded(childSnapshot, previousKey);
+      });
     });
   }
 
@@ -102,13 +49,6 @@ export class RetrieveData {
 
   _stopListeningToQuery(query) {
     query.off();
-  }
-
-  _onValue(snapshot) {
-    let value = this._valueFromSnapshot(snapshot);
-    let index = 0;
-    this._valueMap.set(value.__firebaseKey__, value);
-    this.items.splice(index, 0, value);
   }
 
   _onItemAdded(snapshot, previousKey) {

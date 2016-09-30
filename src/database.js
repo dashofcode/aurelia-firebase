@@ -10,24 +10,13 @@ export class RetrieveData {
   isLoading = true;
   items = [];
 
-  constructor(path: Array<string>, options: Object<any>) {
+  constructor(path: Array<string>, listener: string, options: Object<any>) {
     if (!Container || !Container.instance) throw Error('Container has not been made global');
     let config = Container.instance.get(Configuration);
     if (!config) throw Error('Configuration has not been set');
 
     this._query = new Firebase.database().ref(RetrieveData._getChildLocation(path));
     
-    if (options) {
-      this._query = RetrieveData._setQueryOptions(this._query, options);
-      if (typeof options.listener === 'undefined' || options.listener === true) {
-        this._listenToQuery(this._query);
-      } else {
-        this._fetchQuery(this._query);
-      }
-    } else {
-      this._listenToQuery(this._query);
-    }
-  }
 
   add(item:any) : Promise {
     return new Promise((resolve, reject) => {
@@ -52,6 +41,7 @@ export class RetrieveData {
   getByKey(key): any {
     return this._valueMap.get(key);
   }
+    if (options) this._query = RetrieveData._setQueryOptions(this._query, options);
 
   removeByKey(key) {
     return new Promise((resolve, reject) => {
@@ -77,6 +67,9 @@ export class RetrieveData {
         resolve();
       });
     });
+    if (typeof listener === 'undefined' || listener === "on") this._listenToQuery(this._query);
+    if (listener === "off") this._stopListeningToQuery(query);
+    if (listener === "once") this._fetchQuery(this._query);
   }
 
   _fetchQuery(query) {
