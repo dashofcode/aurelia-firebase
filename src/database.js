@@ -73,8 +73,10 @@ export class RetrieveData {
   }
 
   _fetchQuery(query) {
-    query.on('value', (snapshot) => {
-      this._onValue(snapshot);
+    query.once('value', (snapshot) => {
+      snapshot.forEach((childSnapshot, previousKey) => {
+        this._onItemAdded(childSnapshot, previousKey);
+      });
     });
   }
 
@@ -95,13 +97,6 @@ export class RetrieveData {
 
   _stopListeningToQuery(query) {
     query.off();
-  }
-
-  _onValue(snapshot) {
-    let value = this._valueFromSnapshot(snapshot);
-    let index = 0;
-    this._valueMap.set(value.__firebaseKey__, value);
-    this.items.splice(index, 0, value);
   }
 
   _onItemAdded(snapshot, previousKey) {
