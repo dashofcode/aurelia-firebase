@@ -6,8 +6,8 @@ import {Configuration} from './configuration';
 export class ReactiveCollection {
 
   _query = null;
-  _isBusy = true;
   _valueMap = new Map();
+  isLoading = true;
   items = [];
 
   constructor(path: Array<string>) {
@@ -147,7 +147,7 @@ export class ReactiveCollection {
       };
     }
     value.__firebaseKey__ = snapshot.key;
-    this._isBusy = false;
+    this.isLoading = false;
     return value;
   }
 
