@@ -151,14 +151,12 @@ export class ReactiveCollection {
     return value;
   }
 
-  static _getChildLocation(root: string, path: Array<string>) {
+  static _getChildLocation(path: Array<string>) {
     if (!path) {
-      return root;
-    }
-    if (!root.endsWith('/')) {
-      root = root + '/';
+      return '/';
     }
 
-    return root  + (Array.isArray(path) ? path.join('/') : path);
+    return (Array.isArray(path) ? path.join('/') : path);
+  }
   }
 }
