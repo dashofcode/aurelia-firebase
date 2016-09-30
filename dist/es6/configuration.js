@@ -1,4 +1,3 @@
-import * as firebase from 'firebase';
 /**
  * The default configuration
  */

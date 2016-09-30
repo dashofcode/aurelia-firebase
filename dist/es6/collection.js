@@ -6,17 +6,24 @@ import {Configuration} from './configuration';
 export class ReactiveCollection {
 
   _query = null;
-  _isBusy = true;
   _valueMap = new Map();
+  isLoading = true;
   items = [];
 
-  constructor(path: Array<string>) {
+  constructor(path: Array<string>, options: Object<any>) {
     if (!Container || !Container.instance) throw Error('Container has not been made global');
     let config = Container.instance.get(Configuration);
     if (!config) throw Error('Configuration has not been set');
 
-    this._query = new Firebase.database().ref(path);
-    this._listenToQuery(this._query);
+    this._query = new Firebase.database().ref(ReactiveCollection._getChildLocation(path));
+    this._query = ReactiveCollection._setQueryOptions(this._query, options)
+
+    if (options.listen || typeof(options.listen === 'undefined')) {
+      this._listenToQuery(this._query);
+    } else {
+      this._fetchQuery(this._query);
+    }
+      
   }
 
   add(item:any) : Promise {
@@ -69,6 +76,12 @@ export class ReactiveCollection {
     });
   }
 
+  _fetchQuery(query) {
+    query.on('value', (snapshot) => {
+      this._onValue(snapshot);
+    });
+  }
+
   _listenToQuery(query) {
     query.on('child_added', (snapshot, previousKey) => {
       this._onItemAdded(snapshot, previousKey);
@@ -86,6 +99,13 @@ export class ReactiveCollection {
 
   _stopListeningToQuery(query) {
     query.off();
+  }
+
+  _onValue(snapshot) {
+    let value = this._valueFromSnapshot(snapshot);
+    let index = 0;
+    this._valueMap.set(value.__firebaseKey__, value);
+    this.items.splice(index, 0, value);
   }
 
   _onItemAdded(snapshot, previousKey) {
@@ -147,18 +167,26 @@ export class ReactiveCollection {
       };
     }
     value.__firebaseKey__ = snapshot.key;
-    this._isBusy = false;
+    this.isLoading = false;
     return value;
   }
 
-  static _getChildLocation(root: string, path: Array<string>) {
+  static _getChildLocation(path: Array<string>) {
     if (!path) {
-      return root;
-    }
-    if (!root.endsWith('/')) {
-      root = root + '/';
+      return '/';
     }
 
-    return root  + (Array.isArray(path) ? path.join('/') : path);
+    return (Array.isArray(path) ? path.join('/') : path);
+  }
+
+  static _setQueryOptions(query, options: Object<any>) {
+    for (var i = 0, keys = Object.keys(options); i < keys.length; i++) {
+      var currentOption = keys[i];
+      var currentValue = options[keys[i]];
+      if (currentValue && currentOption !== 'listen') {
+        query = query[currentOption]((currentValue !== true ? currentValue : ''));
+      }
+    }
+    return query;
   }
 }

@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ReactiveCollection = undefined;
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _bluebird = require('bluebird');
@@ -24,20 +26,26 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var ReactiveCollection = exports.ReactiveCollection = function () {
-  function ReactiveCollection(path) {
+  function ReactiveCollection(path, options) {
     _classCallCheck(this, ReactiveCollection);
 
     this._query = null;
-    this._isBusy = true;
     this._valueMap = new Map();
+    this.isLoading = true;
     this.items = [];
 
     if (!_aureliaDependencyInjection.Container || !_aureliaDependencyInjection.Container.instance) throw Error('Container has not been made global');
     var config = _aureliaDependencyInjection.Container.instance.get(_configuration.Configuration);
     if (!config) throw Error('Configuration has not been set');
 
-    this._query = new _firebase2.default.database().ref(path);
-    this._listenToQuery(this._query);
+    this._query = new _firebase2.default.database().ref(ReactiveCollection._getChildLocation(path));
+    this._query = ReactiveCollection._setQueryOptions(this._query, options);
+
+    if (options.listen || _typeof(options.listen === 'undefined')) {
+      this._listenToQuery(this._query);
+    } else {
+      this._fetchQuery(this._query);
+    }
   }
 
   _createClass(ReactiveCollection, [{
@@ -101,27 +109,44 @@ var ReactiveCollection = exports.ReactiveCollection = function () {
       });
     }
   }, {
-    key: '_listenToQuery',
-    value: function _listenToQuery(query) {
+    key: '_fetchQuery',
+    value: function _fetchQuery(query) {
       var _this4 = this;
 
+      query.on('value', function (snapshot) {
+        _this4._onValue(snapshot);
+      });
+    }
+  }, {
+    key: '_listenToQuery',
+    value: function _listenToQuery(query) {
+      var _this5 = this;
+
       query.on('child_added', function (snapshot, previousKey) {
-        _this4._onItemAdded(snapshot, previousKey);
+        _this5._onItemAdded(snapshot, previousKey);
       });
       query.on('child_removed', function (snapshot) {
-        _this4._onItemRemoved(snapshot);
+        _this5._onItemRemoved(snapshot);
       });
       query.on('child_changed', function (snapshot, previousKey) {
-        _this4._onItemChanged(snapshot, previousKey);
+        _this5._onItemChanged(snapshot, previousKey);
       });
       query.on('child_moved', function (snapshot, previousKey) {
-        _this4._onItemMoved(snapshot, previousKey);
+        _this5._onItemMoved(snapshot, previousKey);
       });
     }
   }, {
     key: '_stopListeningToQuery',
     value: function _stopListeningToQuery(query) {
       query.off();
+    }
+  }, {
+    key: '_onValue',
+    value: function _onValue(snapshot) {
+      var value = this._valueFromSnapshot(snapshot);
+      var index = 0;
+      this._valueMap.set(value.__firebaseKey__, value);
+      this.items.splice(index, 0, value);
     }
   }, {
     key: '_onItemAdded',
@@ -187,20 +212,29 @@ var ReactiveCollection = exports.ReactiveCollection = function () {
         };
       }
       value.__firebaseKey__ = snapshot.key;
-      this._isBusy = false;
+      this.isLoading = false;
       return value;
     }
   }], [{
     key: '_getChildLocation',
-    value: function _getChildLocation(root, path) {
+    value: function _getChildLocation(path) {
       if (!path) {
-        return root;
-      }
-      if (!root.endsWith('/')) {
-        root = root + '/';
+        return '/';
       }
 
-      return root + (Array.isArray(path) ? path.join('/') : path);
+      return Array.isArray(path) ? path.join('/') : path;
+    }
+  }, {
+    key: '_setQueryOptions',
+    value: function _setQueryOptions(query, options) {
+      for (var i = 0, keys = Object.keys(options); i < keys.length; i++) {
+        var currentOption = keys[i];
+        var currentValue = options[keys[i]];
+        if (currentValue && currentOption !== 'listen') {
+          query = query[currentOption](currentValue !== true ? currentValue : '');
+        }
+      }
+      return query;
     }
   }]);
 

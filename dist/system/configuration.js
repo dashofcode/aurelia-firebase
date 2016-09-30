@@ -1,9 +1,9 @@
 'use strict';
 
-System.register(['firebase'], function (_export, _context) {
+System.register([], function (_export, _context) {
   "use strict";
 
-  var firebase, _createClass, ConfigurationDefaults, Configuration;
+  var _createClass, ConfigurationDefaults, Configuration;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -12,9 +12,7 @@ System.register(['firebase'], function (_export, _context) {
   }
 
   return {
-    setters: [function (_firebase) {
-      firebase = _firebase;
-    }],
+    setters: [],
     execute: function () {
       _createClass = function () {
         function defineProperties(target, props) {
