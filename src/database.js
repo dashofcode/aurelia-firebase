@@ -3,7 +3,7 @@ import Firebase from 'firebase';
 import {Container} from 'aurelia-dependency-injection';
 import {Configuration} from './configuration';
 
-export class ReactiveCollection {
+export class RetrieveData {
 
   _query = null;
   _valueMap = new Map();
@@ -15,15 +15,18 @@ export class ReactiveCollection {
     let config = Container.instance.get(Configuration);
     if (!config) throw Error('Configuration has not been set');
 
-    this._query = new Firebase.database().ref(ReactiveCollection._getChildLocation(path));
-    this._query = ReactiveCollection._setQueryOptions(this._query, options)
-
-    if (options.listen || typeof(options.listen === 'undefined')) {
-      this._listenToQuery(this._query);
+    this._query = new Firebase.database().ref(RetrieveData._getChildLocation(path));
+    
+    if (options) {
+      this._query = RetrieveData._setQueryOptions(this._query, options);
+      if (typeof options.listener === 'undefined' || options.listener === true) {
+        this._listenToQuery(this._query);
+      } else {
+        this._fetchQuery(this._query);
+      }
     } else {
-      this._fetchQuery(this._query);
+      this._listenToQuery(this._query);
     }
-      
   }
 
   add(item:any) : Promise {

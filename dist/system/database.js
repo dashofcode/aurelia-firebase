@@ -3,7 +3,7 @@
 System.register(['bluebird', 'firebase', 'aurelia-dependency-injection', './configuration'], function (_export, _context) {
   "use strict";
 
-  var Promise, Firebase, Container, Configuration, _typeof, _createClass, ReactiveCollection;
+  var Promise, Firebase, Container, Configuration, _createClass, RetrieveData;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -22,12 +22,6 @@ System.register(['bluebird', 'firebase', 'aurelia-dependency-injection', './conf
       Configuration = _configuration.Configuration;
     }],
     execute: function () {
-      _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
-        return typeof obj;
-      } : function (obj) {
-        return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
-      };
-
       _createClass = function () {
         function defineProperties(target, props) {
           for (var i = 0; i < props.length; i++) {
@@ -46,9 +40,9 @@ System.register(['bluebird', 'firebase', 'aurelia-dependency-injection', './conf
         };
       }();
 
-      _export('ReactiveCollection', ReactiveCollection = function () {
-        function ReactiveCollection(path, options) {
-          _classCallCheck(this, ReactiveCollection);
+      _export('RetrieveData', RetrieveData = function () {
+        function RetrieveData(path, options) {
+          _classCallCheck(this, RetrieveData);
 
           this._query = null;
           this._valueMap = new Map();
@@ -59,17 +53,21 @@ System.register(['bluebird', 'firebase', 'aurelia-dependency-injection', './conf
           var config = Container.instance.get(Configuration);
           if (!config) throw Error('Configuration has not been set');
 
-          this._query = new Firebase.database().ref(ReactiveCollection._getChildLocation(path));
-          this._query = ReactiveCollection._setQueryOptions(this._query, options);
+          this._query = new Firebase.database().ref(RetrieveData._getChildLocation(path));
 
-          if (options.listen || _typeof(options.listen === 'undefined')) {
-            this._listenToQuery(this._query);
+          if (options) {
+            this._query = RetrieveData._setQueryOptions(this._query, options);
+            if (typeof options.listener === 'undefined' || options.listener === true) {
+              this._listenToQuery(this._query);
+            } else {
+              this._fetchQuery(this._query);
+            }
           } else {
-            this._fetchQuery(this._query);
+            this._listenToQuery(this._query);
           }
         }
 
-        _createClass(ReactiveCollection, [{
+        _createClass(RetrieveData, [{
           key: 'add',
           value: function add(item) {
             var _this = this;
@@ -259,10 +257,10 @@ System.register(['bluebird', 'firebase', 'aurelia-dependency-injection', './conf
           }
         }]);
 
-        return ReactiveCollection;
+        return RetrieveData;
       }());
 
-      _export('ReactiveCollection', ReactiveCollection);
+      _export('RetrieveData', RetrieveData);
     }
   };
 });

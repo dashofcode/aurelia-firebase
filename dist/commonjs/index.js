@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ReactiveCollection = exports.AuthenticationManager = exports.User = exports.Configuration = undefined;
+exports.RetrieveData = exports.AuthenticationManager = exports.User = exports.Configuration = undefined;
 
 var _configuration = require('./configuration');
 
@@ -32,12 +32,12 @@ Object.defineProperty(exports, 'AuthenticationManager', {
   }
 });
 
-var _collection = require('./collection');
+var _database = require('./database');
 
-Object.defineProperty(exports, 'ReactiveCollection', {
+Object.defineProperty(exports, 'RetrieveData', {
   enumerable: true,
   get: function get() {
-    return _collection.ReactiveCollection;
+    return _database.RetrieveData;
   }
 });
 

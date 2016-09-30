@@ -1,6 +1,6 @@
 'use strict';
 
-System.register(['./configuration', './user', './authentication', './collection', './events'], function (_export, _context) {
+System.register(['./configuration', './user', './authentication', './database', './events'], function (_export, _context) {
   "use strict";
 
   var Configuration;
@@ -32,9 +32,9 @@ System.register(['./configuration', './user', './authentication', './collection'
       _exportObj3.AuthenticationManager = _authentication.AuthenticationManager;
 
       _export(_exportObj3);
-    }, function (_collection) {
+    }, function (_database) {
       var _exportObj4 = {};
-      _exportObj4.ReactiveCollection = _collection.ReactiveCollection;
+      _exportObj4.RetrieveData = _database.RetrieveData;
 
       _export(_exportObj4);
     }, function (_events) {

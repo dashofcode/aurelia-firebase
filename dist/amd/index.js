@@ -1,10 +1,10 @@
-define(['exports', './configuration', './user', './authentication', './collection', './events'], function (exports, _configuration, _user, _authentication, _collection, _events) {
+define(['exports', './configuration', './user', './authentication', './database', './events'], function (exports, _configuration, _user, _authentication, _database, _events) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.ReactiveCollection = exports.AuthenticationManager = exports.User = exports.Configuration = undefined;
+  exports.RetrieveData = exports.AuthenticationManager = exports.User = exports.Configuration = undefined;
   Object.defineProperty(exports, 'Configuration', {
     enumerable: true,
     get: function () {
@@ -23,10 +23,10 @@ define(['exports', './configuration', './user', './authentication', './collectio
       return _authentication.AuthenticationManager;
     }
   });
-  Object.defineProperty(exports, 'ReactiveCollection', {
+  Object.defineProperty(exports, 'RetrieveData', {
     enumerable: true,
     get: function () {
-      return _collection.ReactiveCollection;
+      return _database.RetrieveData;
     }
   });
   Object.keys(_events).forEach(function (key) {

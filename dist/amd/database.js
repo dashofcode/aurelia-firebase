@@ -4,7 +4,7 @@ define(['exports', 'bluebird', 'firebase', 'aurelia-dependency-injection', './co
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.ReactiveCollection = undefined;
+  exports.RetrieveData = undefined;
 
   var _bluebird2 = _interopRequireDefault(_bluebird);
 
@@ -15,12 +15,6 @@ define(['exports', 'bluebird', 'firebase', 'aurelia-dependency-injection', './co
       default: obj
     };
   }
-
-  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
-    return typeof obj;
-  } : function (obj) {
-    return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
-  };
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -46,9 +40,9 @@ define(['exports', 'bluebird', 'firebase', 'aurelia-dependency-injection', './co
     };
   }();
 
-  var ReactiveCollection = exports.ReactiveCollection = function () {
-    function ReactiveCollection(path, options) {
-      _classCallCheck(this, ReactiveCollection);
+  var RetrieveData = exports.RetrieveData = function () {
+    function RetrieveData(path, options) {
+      _classCallCheck(this, RetrieveData);
 
       this._query = null;
       this._valueMap = new Map();
@@ -59,17 +53,21 @@ define(['exports', 'bluebird', 'firebase', 'aurelia-dependency-injection', './co
       var config = _aureliaDependencyInjection.Container.instance.get(_configuration.Configuration);
       if (!config) throw Error('Configuration has not been set');
 
-      this._query = new _firebase2.default.database().ref(ReactiveCollection._getChildLocation(path));
-      this._query = ReactiveCollection._setQueryOptions(this._query, options);
+      this._query = new _firebase2.default.database().ref(RetrieveData._getChildLocation(path));
 
-      if (options.listen || _typeof(options.listen === 'undefined')) {
-        this._listenToQuery(this._query);
+      if (options) {
+        this._query = RetrieveData._setQueryOptions(this._query, options);
+        if (typeof options.listener === 'undefined' || options.listener === true) {
+          this._listenToQuery(this._query);
+        } else {
+          this._fetchQuery(this._query);
+        }
       } else {
-        this._fetchQuery(this._query);
+        this._listenToQuery(this._query);
       }
     }
 
-    _createClass(ReactiveCollection, [{
+    _createClass(RetrieveData, [{
       key: 'add',
       value: function add(item) {
         var _this = this;
@@ -259,6 +257,6 @@ define(['exports', 'bluebird', 'firebase', 'aurelia-dependency-injection', './co
       }
     }]);
 
-    return ReactiveCollection;
+    return RetrieveData;
   }();
 });
