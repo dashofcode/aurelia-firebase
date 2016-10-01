@@ -4,7 +4,7 @@ define(['exports', './configuration', './user', './authentication', './database'
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.RetrieveData = exports.AuthenticationManager = exports.User = exports.Configuration = undefined;
+  exports.FirebaseDatabase = exports.AuthenticationManager = exports.User = exports.Configuration = undefined;
   Object.defineProperty(exports, 'Configuration', {
     enumerable: true,
     get: function () {
@@ -23,10 +23,10 @@ define(['exports', './configuration', './user', './authentication', './database'
       return _authentication.AuthenticationManager;
     }
   });
-  Object.defineProperty(exports, 'RetrieveData', {
+  Object.defineProperty(exports, 'FirebaseDatabase', {
     enumerable: true,
     get: function () {
-      return _database.RetrieveData;
+      return _database.FirebaseDatabase;
     }
   });
   Object.keys(_events).forEach(function (key) {

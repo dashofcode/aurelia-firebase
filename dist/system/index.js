@@ -34,7 +34,7 @@ System.register(['./configuration', './user', './authentication', './database', 
       _export(_exportObj3);
     }, function (_database) {
       var _exportObj4 = {};
-      _exportObj4.RetrieveData = _database.RetrieveData;
+      _exportObj4.FirebaseDatabase = _database.FirebaseDatabase;
 
       _export(_exportObj4);
     }, function (_events) {

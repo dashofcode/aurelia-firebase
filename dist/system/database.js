@@ -3,7 +3,7 @@
 System.register(['bluebird', 'firebase', 'aurelia-dependency-injection', './configuration'], function (_export, _context) {
   "use strict";
 
-  var Promise, Firebase, Container, Configuration, _createClass, RetrieveData;
+  var Promise, Firebase, Container, Configuration, _createClass, FirebaseDatabase;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -40,11 +40,12 @@ System.register(['bluebird', 'firebase', 'aurelia-dependency-injection', './conf
         };
       }();
 
-      _export('RetrieveData', RetrieveData = function () {
-        function RetrieveData(path, listener, options) {
-          _classCallCheck(this, RetrieveData);
+      _export('FirebaseDatabase', FirebaseDatabase = function () {
+        function FirebaseDatabase(path, listener, filters) {
+          _classCallCheck(this, FirebaseDatabase);
 
           this._query = null;
+          this._queryWithFilters = null;
           this._valueMap = new Map();
           this.isLoading = true;
           this.items = [];
@@ -53,16 +54,18 @@ System.register(['bluebird', 'firebase', 'aurelia-dependency-injection', './conf
           var config = Container.instance.get(Configuration);
           if (!config) throw Error('Configuration has not been set');
 
-          this._query = new Firebase.database().ref(RetrieveData._getChildLocation(path));
+          this._query = new Firebase.database().ref(FirebaseDatabase._getChildLocation(path));
 
-          if (options) this._query = RetrieveData._setQueryOptions(this._query, options);
+          if (filters) this._queryWithFilters = FirebaseDatabase._setQueryFilters(this._query, filters);
 
-          if (typeof listener === 'undefined' || listener === "on") this._listenToQuery(this._query);
-          if (listener === "off") this._stopListeningToQuery(query);
-          if (listener === "once") this._fetchQuery(this._query);
+          if (typeof listener === 'undefined' || listener === "on") {
+            this._listenToQuery(filters ? this._queryWithFilters : this._query);
+          } else {
+            this._fetchQuery(filters ? this._queryWithFilters : this._query);
+          }
         }
 
-        _createClass(RetrieveData, [{
+        _createClass(FirebaseDatabase, [{
           key: '_fetchQuery',
           value: function _fetchQuery(query) {
             var _this = this;
@@ -163,6 +166,66 @@ System.register(['bluebird', 'firebase', 'aurelia-dependency-injection', './conf
             this.isLoading = false;
             return value;
           }
+        }, {
+          key: 'add',
+          value: function add(item) {
+            var _this3 = this;
+
+            return new Promise(function (resolve, reject) {
+              var query = _this3._query.ref().push();
+              query.set(item, function (error) {
+                if (error) {
+                  reject(error);
+                  return;
+                }
+                resolve(item);
+              });
+            });
+          }
+        }, {
+          key: 'remove',
+          value: function remove(item) {
+            if (item === null || item.__firebaseKey__ === null) {
+              return Promise.reject({ message: 'Unknown item' });
+            }
+            return this.removeByKey(item.__firebaseKey__);
+          }
+        }, {
+          key: 'getByKey',
+          value: function getByKey(key) {
+            return this._valueMap.get(key);
+          }
+        }, {
+          key: 'removeByKey',
+          value: function removeByKey(key) {
+            var _this4 = this;
+
+            return new Promise(function (resolve, reject) {
+              _this4._query.ref().child(key).remove(function (error) {
+                if (error) {
+                  reject(error);
+                  return;
+                }
+                resolve(key);
+              });
+            });
+          }
+        }, {
+          key: 'clear',
+          value: function clear() {
+            var _this5 = this;
+
+            return new Promise(function (resolve, reject) {
+              var query = _this5._query.ref();
+              query.remove(function (error) {
+                if (error) {
+                  reject(error);
+                  return;
+                }
+                resolve();
+              });
+            });
+          }
         }], [{
           key: '_getChildLocation',
           value: function _getChildLocation(path) {
@@ -173,23 +236,21 @@ System.register(['bluebird', 'firebase', 'aurelia-dependency-injection', './conf
             return Array.isArray(path) ? path.join('/') : path;
           }
         }, {
-          key: '_setQueryOptions',
-          value: function _setQueryOptions(query, options) {
-            for (var i = 0, keys = Object.keys(options); i < keys.length; i++) {
-              var currentOption = keys[i];
-              var currentValue = options[keys[i]];
-              if (currentValue && currentOption !== 'listen') {
-                query = query[currentOption](currentValue !== true ? currentValue : '');
-              }
+          key: '_setQueryFilters',
+          value: function _setQueryFilters(query, filters) {
+            for (var i = 0, keys = Object.keys(filters); i < keys.length; i++) {
+              var currentFilter = keys[i];
+              var currentValue = filters[keys[i]];
+              query = query[currentFilter](currentValue !== true ? currentValue : '');
             }
             return query;
           }
         }]);
 
-        return RetrieveData;
+        return FirebaseDatabase;
       }());
 
-      _export('RetrieveData', RetrieveData);
+      _export('FirebaseDatabase', FirebaseDatabase);
     }
   };
 });

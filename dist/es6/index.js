@@ -3,7 +3,7 @@ import {Configuration} from './configuration';
 export {Configuration} from './configuration';
 export {User} from './user';
 export {AuthenticationManager} from './authentication';
-export {RetrieveData} from './database';
+export {FirebaseDatabase} from './database';
 export * from './events';
 
 export function configure(aurelia: Object, configCallback: Function) {

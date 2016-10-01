@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.RetrieveData = exports.AuthenticationManager = exports.User = exports.Configuration = undefined;
+exports.FirebaseDatabase = exports.AuthenticationManager = exports.User = exports.Configuration = undefined;
 
 var _configuration = require('./configuration');
 
@@ -34,10 +34,10 @@ Object.defineProperty(exports, 'AuthenticationManager', {
 
 var _database = require('./database');
 
-Object.defineProperty(exports, 'RetrieveData', {
+Object.defineProperty(exports, 'FirebaseDatabase', {
   enumerable: true,
   get: function get() {
-    return _database.RetrieveData;
+    return _database.FirebaseDatabase;
   }
 });
 
