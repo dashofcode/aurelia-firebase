@@ -156,7 +156,12 @@ define(['exports', 'bluebird', 'firebase', 'aurelia-dependency-injection', './co
       key: '_valueFromSnapshot',
       value: function _valueFromSnapshot(snapshot) {
         var value = snapshot.val();
-
+        if (!(value instanceof Object)) {
+          value = {
+            value: value,
+            __firebasePrimitive__: true
+          };
+        }
         value.__firebaseKey__ = snapshot.key;
         this.isLoading = false;
         return value;

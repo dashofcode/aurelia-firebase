@@ -139,7 +139,12 @@ var FirebaseDatabase = exports.FirebaseDatabase = function () {
     key: '_valueFromSnapshot',
     value: function _valueFromSnapshot(snapshot) {
       var value = snapshot.val();
-
+      if (!(value instanceof Object)) {
+        value = {
+          value: value,
+          __firebasePrimitive__: true
+        };
+      }
       value.__firebaseKey__ = snapshot.key;
       this.isLoading = false;
       return value;
